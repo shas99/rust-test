@@ -1,45 +1,36 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/rust-postgres
+
 {
-	"name": "Rust and PostgreSQL",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "app",
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-	"features": {
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
-		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
-		"ghcr.io/devcontainers/features/nvidia-cuda:1": {
-			"installCudnn": true,
-		},
-		"ghcr.io/devcontainers/features/rust:1": {},
-		"ghcr.io/eitsupi/devcontainer-features/mdbook:0": {},
-		"ghcr.io/guiyomh/features/vim:0": {}
+	"name": "Rust",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": {
+			"VARIANT":"buster"
+		}
 	},
-	
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+	"runArgs": [
+		"--cap-add=SYS_PTRACE",
+		"--security-opt",
+		"seccomp=unconfined"
+	],
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [5432],
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "rustc --version",
+
 	"customizations": {
 		"vscode": {
+
+			"settings": {
+				"lldb.executable": "/usr/bin/lldb",
+				"files.watcherExclude": {
+					"**/target/**": true
+				},
+				"rust-analyzer.checkOnSave.command":"clippy"
+			},
+
 			"extensions": [
-				"GitHub.copilot-labs",
 				"GitHub.copilot-nightly",
-				"ms-azuretools.vscode-docker",
-				"technosophos.vscode-make",
-				"ms-vscode.makefile-tools",
                 "rust-lang.rust-analyzer"
 			]
 		}
-	},
+	}
 
-	// Configure tool-specific properties.
-	// "customizations": {},
-
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
 }
